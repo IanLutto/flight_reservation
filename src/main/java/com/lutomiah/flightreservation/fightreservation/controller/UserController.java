@@ -29,15 +29,6 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
-@Autowired
-    private final BCryptPasswordEncoder encoder;
-
-    @Autowired
-    public UserController(UserRepository userRepository, UserService userService, BCryptPasswordEncoder encoder) {
-        this.userRepository = userRepository;
-        this.userService = userService;
-        this.encoder = encoder;
-    }
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> register(@RequestBody HashMap<String, String> requestMap) {
@@ -62,7 +53,7 @@ public class UserController {
             user.setFirstName(requestMap.get("firstName").trim());
             user.setLastName(requestMap.get("lastName").trim());
             user.setEmail(requestMap.get("email").trim());
-            user.setPassword(encoder.encode(requestMap.get("password").trim()));
+            user.setPassword(requestMap.get("password").trim());
             LOGGER.info("ENcoded Password! " + user.getPassword());
 
             userRepository.save(user);
